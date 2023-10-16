@@ -2,11 +2,10 @@ FROM ubuntu:22.04
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git curl ca-certificates \
+        git curl net-tools ca-certificates \
     && curl -L https://foundry.paradigm.xyz | bash \
     && . /root/.bashrc \
-    && foundryup \
-    && . /root/.bashrc
+    && foundryup
 
 COPY ethereum /ethereum
 COPY scripts/init-ethereum.sh /init.sh

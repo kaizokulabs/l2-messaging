@@ -5,6 +5,11 @@ services:
     build:
       context: .
       dockerfile: ./ethereum/Dockerfile.local
+    healthcheck:
+      test: ["CMD", "netstat", "-tuplen", "|", "grep", "8545"]
+      interval: 1s
+      timeout: 1s
+      retries: 10
     ports:
       - 8545:8545
     environment:
@@ -19,3 +24,12 @@ services:
       - L2_SELECTOR_STRUCT=0x00f1149cade9d692862ad41df96b108aa2c20af34f640457e781d166c98dc6b0
       - L2_ACCOUNT=0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f8160973
 
+  starknet:
+    build:
+      context: .
+      dockerfile: ./starknet/Dockerfile.local
+    depends_on:
+      ethereum:
+        condition: service_healthy
+    ports:
+      - 5050:5050

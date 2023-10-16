@@ -1,0 +1,20 @@
+FROM ubuntu:22.04
+
+ENV SHELL /bin/bash
+
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git curl ca-certificates \
+    && curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh \
+    && curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh \
+    && curl -L https://install.dojoengine.org | bash \
+    && curl https://get.starkli.sh | sh \
+    && /root/.dojo/bin/dojoup -v nightly \
+    && /root/.starkli/bin/starkliup
+
+COPY starknet /starknet
+COPY scripts/init-starknet.sh /init.sh
+
+RUN chmod +x /init.sh
+
+ENTRYPOINT ["/bin/bash", "-c", "/init.sh"]

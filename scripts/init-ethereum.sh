@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/root/.foundry/bin/anvil &
+/root/.foundry/bin/anvil --host 0.0.0.0 &
 pid=$!
 sleep 2
 
