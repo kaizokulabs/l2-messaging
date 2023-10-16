@@ -1,0 +1,16 @@
+FROM ubuntu:22.04
+
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git curl ca-certificates \
+    && curl -L https://foundry.paradigm.xyz | bash \
+    && . /root/.bashrc \
+    && foundryup \
+    && . /root/.bashrc
+
+COPY ethereum /ethereum
+COPY scripts/init-ethereum.sh /init.sh
+
+RUN chmod +x /init.sh
+
+ENTRYPOINT ["/bin/bash", "-c", "/init.sh"]
