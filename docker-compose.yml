@@ -1,7 +1,8 @@
 version: '3.8'
 
 services:
-  ethereum:
+  eth:
+    container_name: l2_messaging_eth
     build:
       context: .
       dockerfile: ./ethereum/Dockerfile.local
@@ -19,17 +20,18 @@ services:
       - ACCOUNT_ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
       - CONTRACT_MSG_ADDRESS=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
       - SN_MESSAGING_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
-      - L2_CONTRACT_ADDRESS=0x03e4b41d5bf9ece15bd6e194c734b87bf338b262cbe411d5b2d2facab245e9e9
+      - L2_CONTRACT_ADDRESS=0x05528d572fdd2e8f9d5e3fafda3b038fdfff6188d6797f6096004c941d080800
       - L2_SELECTOR_VALUE=0x005421de947699472df434466845d68528f221a52fce7ad2934c5dae2e1f1cdc
       - L2_SELECTOR_STRUCT=0x00f1149cade9d692862ad41df96b108aa2c20af34f640457e781d166c98dc6b0
       - L2_ACCOUNT=0x517ececd29116499f4a1b64b094da79ba08dfd54a3edaa316134c41f8160973
 
-  starknet:
+  stark:
+    container_name: l2_messaging_stark
     build:
       context: .
       dockerfile: ./starknet/Dockerfile.local
     depends_on:
-      ethereum:
+      eth:
         condition: service_healthy
     ports:
       - 5050:5050
