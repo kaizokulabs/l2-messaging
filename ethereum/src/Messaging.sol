@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "starknet/IStarknetMessaging.sol";
+import "src/interfaces/IStarknetMessaging.sol";
 
 // Define some custom error as an example.
 // It saves a lot's of space to use those custom error instead of strings.
@@ -11,7 +11,7 @@ error InvalidPayload();
 /**
    @title Test contract to receive / send messages to starknet.
 */
-contract ContractMsg {
+contract Messaging {
 
     //
     IStarknetMessaging private _snMessaging;
@@ -19,8 +19,7 @@ contract ContractMsg {
     /**
        @notice Constructor.
 
-       @param snMessaging The address of Starknet Core contract, responsible
-       or messaging.
+       @param snMessaging The address of Starknet Core contract, responsible or messaging.
     */
     constructor(address snMessaging) {
         _snMessaging = IStarknetMessaging(snMessaging);
@@ -41,10 +40,7 @@ contract ContractMsg {
         uint256 contractAddress,
         uint256 selector,
         uint256[] memory payload
-    )
-        external
-        payable
-    {
+    ) external payable {
         _snMessaging.sendMessageToL2{value: msg.value}(
             contractAddress,
             selector,
@@ -60,10 +56,7 @@ contract ContractMsg {
         uint256 contractAddress,
         uint256 selector,
         uint256 value
-    )
-        external
-        payable
-    {
+    ) external payable {
         uint256[] memory payload = new uint256[](1);
         payload[0] = value;
 

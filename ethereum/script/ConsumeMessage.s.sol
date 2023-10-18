@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 
-import "src/ContractMsg.sol";
+import "src/Messaging.sol";
 
 /**
  * @notice A simple script to consume a message from Starknet.
@@ -29,7 +29,7 @@ contract Value is Script {
 
         // The address must be the address that has sent the message.
         // In out case, it's the katana account 0.
-        ContractMsg(_contractMsgAddress).consumeMessageValue(
+        Messaging(_contractMsgAddress).consumeMessageValue(
             _l2Account,
             payload);
 
@@ -59,7 +59,7 @@ contract Struct is Script {
         payload[0] = 1;
         payload[1] = 2;
 
-        ContractMsg(_contractMsgAddress).consumeMessageStruct(
+        Messaging(_contractMsgAddress).consumeMessageStruct(
             _l2Account,
             payload);
 

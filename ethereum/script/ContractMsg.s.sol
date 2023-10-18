@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 
-import "src/ContractMsg.sol";
+import "src/Messaging.sol";
 
 /**
    Deploys only the ContractMsg.
@@ -19,7 +19,7 @@ contract Deploy is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        address contractMsg = address(new ContractMsg(snMessagingAddress));
+        address contractMsg = address(new Messaging(snMessagingAddress));
         vm.serializeString(json, "contractMsg_address", vm.toString(contractMsg));
 
         vm.stopBroadcast();
