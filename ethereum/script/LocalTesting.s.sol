@@ -7,13 +7,13 @@ import "src/Messaging.sol";
 import "src/local/StarknetMessagingLocal.sol";
 
 /**
-   Deploys the ContractMsg and StarknetMessagingLocal contracts.
-   Very handy to quickly setup Anvil to debug.
-*/
+ * Deploys the ContractMsg and StarknetMessagingLocal contracts.
+ *    Very handy to quickly setup Anvil to debug.
+ */
 contract LocalSetup is Script {
     function setUp() public {}
 
-    function run() public{
+    function run() public {
         uint256 deployerPrivateKey = vm.envUint("ACCOUNT_PRIVATE_KEY");
 
         string memory json = "local_testing";

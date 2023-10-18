@@ -24,7 +24,7 @@ contract Value is Script {
         _l2Selector = vm.envUint("L2_SELECTOR_VALUE");
     }
 
-    function run() public{
+    function run() public {
         vm.startBroadcast(_privateKey);
 
         uint256[] memory payload = new uint256[](1);
@@ -37,10 +37,7 @@ contract Value is Script {
 
         // Remember that there is a cost of at least 20k wei to send a message.
         // Let's send 30k here to ensure that we pay enough for our payload serialization.
-        Messaging(_contractMsgAddress).sendMessage{value: 30000}(
-            _l2ContractAddress,
-            _l2Selector,
-            payload);
+        Messaging(_contractMsgAddress).sendMessage{value: 30000}(_l2ContractAddress, _l2Selector, payload);
 
         vm.stopBroadcast();
     }
@@ -64,7 +61,7 @@ contract Struct is Script {
         _l2Selector = vm.envUint("L2_SELECTOR_STRUCT");
     }
 
-    function run() public{
+    function run() public {
         vm.startBroadcast(_privateKey);
 
         uint256[] memory payload = new uint256[](2);
@@ -73,10 +70,7 @@ contract Struct is Script {
 
         // Remember that there is a cost of at least 20k wei to send a message.
         // Let's send 30k here to ensure that we pay enough for our payload serialization.
-        Messaging(_contractMsgAddress).sendMessage{value: 30000}(
-            _l2ContractAddress,
-            _l2Selector,
-            payload);
+        Messaging(_contractMsgAddress).sendMessage{value: 30000}(_l2ContractAddress, _l2Selector, payload);
 
         vm.stopBroadcast();
     }
