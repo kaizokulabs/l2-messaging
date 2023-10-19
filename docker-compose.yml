@@ -36,14 +36,14 @@ services:
     ports:
       - 5050:5050
 
-  zksync_geth:
-    container_name: l2_messaging_zksync_geth
-    image: "matterlabs/geth:latest"
-    logging:
-        driver: none 
-    ports:
-      - "8545:8545"
-      - "8546:8546"
+# zksync_geth:
+#   container_name: l2_messaging_zksync_geth
+#   image: "matterlabs/geth:latest"
+#   logging:
+#       driver: none 
+#   ports:
+#     - "8545:8545"
+#     - "8546:8546"
 
   zksync_db:
     container_name: l2_messaging_zksync_db
@@ -59,11 +59,11 @@ services:
     tty: true
     image: matterlabs/local-node:latest2.0
     depends_on:
-      - zksync_geth
+      - eth
       - zksync_db
     ports:
       - "3050:3050" # JSON RPC HTTP port
       - "3051:3051" # JSON RPC WS port
     environment:
       - DATABASE_URL=postgres://postgres@zksync_db/zksync_local
-      - ETH_CLIENT_WEB3_URL=http://zksync_geth:8545
+      - ETH_CLIENT_WEB3_URL=http://eth:8545
