@@ -6,12 +6,12 @@ import "forge-std/Script.sol";
 import "src/Messaging.sol";
 
 /**
-   Deploys only the ContractMsg.
-*/
+ * Deploys only the ContractMsg.
+ */
 contract Deploy is Script {
     function setUp() public {}
 
-    function run() public{
+    function run() public {
         uint256 deployerPrivateKey = vm.envUint("ACCOUNT_PRIVATE_KEY");
         address snMessagingAddress = vm.envAddress("SN_MESSAGING_ADDRESS");
 

@@ -19,7 +19,7 @@ contract Value is Script {
         _l2Account = vm.envUint("L2_ACCOUNT");
     }
 
-    function run() public{
+    function run() public {
         vm.startBroadcast(_privateKey);
 
         // This value must match what was sent from starknet.
@@ -29,9 +29,7 @@ contract Value is Script {
 
         // The address must be the address that has sent the message.
         // In out case, it's the katana account 0.
-        Messaging(_contractMsgAddress).consumeMessageValue(
-            _l2Account,
-            payload);
+        Messaging(_contractMsgAddress).consumeMessage(_l2Account, payload);
 
         vm.stopBroadcast();
     }
@@ -51,7 +49,7 @@ contract Struct is Script {
         _l2Account = vm.envUint("L2_ACCOUNT");
     }
 
-    function run() public{
+    function run() public {
         vm.startBroadcast(_privateKey);
 
         // In the example, we've sent a message with serialize MyData.
@@ -59,9 +57,7 @@ contract Struct is Script {
         payload[0] = 1;
         payload[1] = 2;
 
-        Messaging(_contractMsgAddress).consumeMessageStruct(
-            _l2Account,
-            payload);
+        Messaging(_contractMsgAddress).consumeMessage(_l2Account, payload);
 
         vm.stopBroadcast();
     }

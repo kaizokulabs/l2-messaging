@@ -16,7 +16,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 pragma solidity ^0.8.0;
 
-import "src/interfaces/IStarknetMessaging.sol";
+import "./IStarknetMessaging.sol";
 import "./NamedStorage.sol";
 
 /**
