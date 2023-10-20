@@ -1,1 +1,1 @@
-mod contract_msg;
+mod sample;

@@ -11,7 +11,7 @@ source katana.env
 
 /root/.starkli/bin/starkli declare target/dev/starknet_messaging_contract_msg.sierra.json --keystore-password ""
 
-/root/.starkli/bin/starkli deploy 0x0508102abfa90aec2fa48c0eb629759a1c7ab6fa8a9297d269c4a453719a7fe0 \
+/root/.starkli/bin/starkli deploy 0x00d1e9a75ed754f4ee6579312737ee59086d4992e3303a2ea3413a060f49be5f \
     --salt 0x1234 \
     --keystore-password ""
 

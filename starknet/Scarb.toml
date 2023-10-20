@@ -9,4 +9,5 @@ snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v
 starknet = "2.2.0"
 
 [[target.starknet-contract]]
+casm = true
 sierra = true

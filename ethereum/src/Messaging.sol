@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.21;
 
-pragma solidity ^0.8.0;
+import "forge-std/console.sol";
 
 import {IStarknetMessaging} from "starknet/IStarknetMessaging.sol";
 
@@ -18,11 +19,11 @@ contract Messaging {
 
     /**
      * @notice Sends a message to Starknet contract.
-     * 
+     *
      *    @param contractAddress The contract's address on starknet.
      *    @param selector The l1_handler function of the contract to call.
      *    @param payload The serialized data to be sent.
-     * 
+     *
      *    @dev Consider that Cairo only understands felts252.
      *    So the serialization on solidity must be adjusted. For instance, a uint256
      *    must be split in two uint256 with low and high part to be understood by Cairo.
@@ -33,24 +34,44 @@ contract Messaging {
 
     /**
      * @notice Manually consumes a message that was received from L2.
-     * 
+     *
      *    @param fromAddress L2 contract (account) that has sent the message.
      *    @param payload Payload of the message used to verify the hash.
-     * 
+     *
      *    @dev A message "receive" means that the message hash is registered as consumable.
      *    One must provide the message content, to let Starknet Core contract verify the hash
      *    and validate the message content before being consumed.
      */
-    function consumeMessage(uint256 fromAddress, uint256[] calldata payload) external {
-        // Will revert if the message is not consumable.
-        _snMessaging.consumeMessageFromL2(fromAddress, payload);
+    function consumeMessage(uint256 fromAddress, uint256[] calldata payload) external payable returns (uint256) {
+        console.log("consumeMessage");
+        bytes32 hash = _snMessaging.consumeMessageFromL2(fromAddress, payload);
+        
+        console.log("after consume");
 
-        // The previous call returns the message hash (bytes32)
-        // that can be used if necessary.
+        uint256 a = payload[0];
+        uint256 b = payload[1];
+        uint256 c = payload[2];
 
-        // You can use the payload to do stuff here as you now know that the message is
-        // valid and safe to process.
-        // Remember that the payload contains cairo serialized data. So you must
-        // deserialize the payload depending on the data it contains.
+        return a + b + c;
+
+        // require(payload.length < 3, "Invalid payload");
+        //
+        // address dest_address = address(uint160(payload[0]));
+        // bytes4 selector = bytes4(uint32(payload[1]));
+        // uint256 amount = payload[2];
+        //
+        // require(amount > msg.value, "Invalid amount");
+        //
+        // if (amount > 0) {
+        //     (bool success,) = payable(dest_address).call{value: amount}(abi.encodeWithSelector(selector, payload[3:]));
+        //     if (!success) {
+        //         revert InvalidPayload();
+        //     }
+        // } else {
+        //     (bool success,) = dest_address.call(abi.encodeWithSelector(selector, payload[3:]));
+        //     if (!success) {
+        //         revert InvalidPayload();
+        //     }
+        // }
     }
 }

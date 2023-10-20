@@ -14,7 +14,7 @@ L1_CONTRACT_ADDR=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 
 # The deployed address on Katana is also pre-computed. So if you change the contract,
 # please consider changing this value too as the contract class will change.
-CONTRACT_MSG_ADDR=0x05528d572fdd2e8f9d5e3fafda3b038fdfff6188d6797f6096004c941d080800
+CONTRACT_MSG_ADDR=0x06f119ec7cc3a9dce741fa7d2ea3d99e41457b2a528fc48b58b5f1aced8d49cc
 
 OPTS := --account ${ACCOUNT_FILE} \
 	--rpc http://0.0.0.0:5050 \
@@ -24,4 +24,5 @@ send_msg_value_l2:
 	docker exec -it l2_messaging_eth bash -c "cd /ethereum && /root/.foundry/bin/forge script script/SendMessage.s.sol:Value --broadcast --rpc-url ${ETH_RPC_URL}"
 
 send_msg_value_l1:
-	docker exec -it l2_messaging_stark /root/.starkli/bin/starkli invoke ${CONTRACT_MSG_ADDR} send_message_value ${L1_CONTRACT_ADDR} 1 ${OPTS}
+	docker exec -it l2_messaging_stark /root/.starkli/bin/starkli invoke ${CONTRACT_MSG_ADDR} send_message ${OPTS}
+	docker exec -it l2_messaging_eth bash -c "cd /ethereum && /root/.foundry/bin/forge script script/ConsumeMessage.s.sol:Struct --broadcast --rpc-url ${ETH_RPC_URL}"
