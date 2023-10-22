@@ -1,10 +1,12 @@
 #!/bin/bash
 
+source /tmp/env
+
 /root/.foundry/bin/anvil --host 0.0.0.0 &
-pid=$!
+PID=$!
 sleep 2
 
 cd /ethereum
 /root/.foundry/bin/forge script script/LocalTesting.s.sol:LocalSetup --broadcast --rpc-url $ETH_RPC_URL
 
-wait $pid
+wait $PID
