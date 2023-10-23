@@ -15,13 +15,16 @@ This repository is intended to create a base messaging layer between L1 <> L2 an
 ./scripts/l2-messaging run-all
 
 # L1 > L2 messaging
-#./scripts/l2-messaging send-l2 <address> <selector> <args>
-./scripts/l2-messaging send-l2 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+# ./scripts/l2-messaging send-l2
+./scripts/l2-messaging send-l2
 
 # L2 > L1 messaging
-#./scripts/l2-messaging send-l1 <address> <selector> <args>
-./scripts/l2-messaging send-l1 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+# ./scripts/l2-messaging send-l1
+./scripts/l2-messaging send-l1
 ```
+
+You can also check the logs with:
+`docker compose logs -f l2_messaging_{eth, stark}`
 
 ## Credits
 
