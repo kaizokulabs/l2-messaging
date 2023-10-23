@@ -46,7 +46,8 @@ send_l1() {
     docker exec -it l2_messaging_eth \
         bash -c "cd /ethereum && \
         /root/.foundry/bin/forge script \
-        script/ConsumeMessage.s.sol:Consume \
+        script/ConsumeMessage.s.sol:Consume ${@:2} \
+        --sig 'run(uint256,uint256,uint256[])' \
         --broadcast \
         --rpc-url ${ETH_RPC_URL}"
 }
@@ -57,7 +58,17 @@ send_l2() {
         /bin/bash -c "cd /ethereum && \
         export SN_CONTRACT_ADDR=${SN_CONTRACT_ADDR} && \
         /root/.foundry/bin/forge script \
-        script/SendMessage.s.sol:Send ${@:2} \
+        script/SendMessage.s.sol:Send ${@:2:2} '[`echo $(echo ${@:4}) | tr ' ' ','`]' \
+        --sig 'run(uint256,uint256,uint256[])' \
+        --broadcast \
+        --rpc-url ${ETH_RPC_URL}"
+    sleep 10
+    docker exec -it l2_messaging_eth \
+        /bin/bash -c "cd /ethereum && \
+        export SN_CONTRACT_ADDR=${SN_CONTRACT_ADDR} && \
+        /root/.foundry/bin/forge script \
+        script/SendMessage.s.sol:Consume '[`echo $(echo ${@:4}) | tr ' ' ','`]' \
+        --sig 'run(uint256[])' \
         --broadcast \
         --rpc-url ${ETH_RPC_URL}"
 }
