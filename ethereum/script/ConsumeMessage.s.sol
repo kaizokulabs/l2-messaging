@@ -9,7 +9,7 @@ import "src/Messaging.sol";
 /**
  * @notice A simple script to consume a message from Starknet.
  */
-contract Struct is Script {
+contract Consume is Script {
     uint256 _privateKey;
     address _contractMsgAddress;
     uint256 _l2Account;
@@ -28,8 +28,7 @@ contract Struct is Script {
         payload[1] = 2;
         payload[2] = 3;
 
-        uint256 result = Messaging(_contractMsgAddress).consumeMessage(_l2Account, payload);
-        console.log("Result:", result);
+        Messaging(_contractMsgAddress).consumeMessage(_l2Account, payload);
 
         vm.stopBroadcast();
     }

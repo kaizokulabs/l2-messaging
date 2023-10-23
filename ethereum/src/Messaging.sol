@@ -42,7 +42,7 @@ contract Messaging {
      *    One must provide the message content, to let Starknet Core contract verify the hash
      *    and validate the message content before being consumed.
      */
-    function consumeMessage(uint256 fromAddress, uint256[] calldata payload) external payable returns (uint256) {
+    function consumeMessage(uint256 fromAddress, uint256[] calldata payload) external payable {
         _snMessaging.consumeMessageFromL2(fromAddress, payload);
 
         require(payload.length < 3, "Invalid payload");

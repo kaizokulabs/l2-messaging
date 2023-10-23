@@ -25,12 +25,15 @@ contract LocalSetup is Script {
         address snLocalAddress = address(new StarknetMessagingLocal());
         vm.serializeString(json, "snMessaging_address", vm.toString(snLocalAddress));
 
-        address localAddress = address(new Sample());
-        vm.serializeString(json, "sample_address", vm.toString(localAddress));
-        console.log("Sample address:", vm.toString(localAddress));
-
         address contractMsg = address(new Messaging(snLocalAddress));
         vm.serializeString(json, "contractMsg_address", vm.toString(contractMsg));
+
+        address localAddress = address(new Sample());
+        vm.serializeString(json, "sample_address", vm.toString(localAddress));
+
+        console.log("LocalSetup: snMessaging_address: ", vm.toString(snLocalAddress));
+        console.log("LocalSetup: contractMsg_address: ", vm.toString(contractMsg));
+        console.log("LocalSetup: sample_address: ", vm.toString(localAddress));
 
         vm.stopBroadcast();
 
