@@ -38,10 +38,7 @@ mod contract_msg {
 
     #[constructor]
     fn constructor(ref self: ContractState) {
-        // 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-        // 1324161310598743833836268493538283093091898295570
         self.eth_messaging_address.write(0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512);
-        //self.eth_messaging_address.write(1324161310598743833836268493538283093091898295570);
     }
 
     /// Handles a message received from L1.
