@@ -2,8 +2,10 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
+import "forge-std/console.sol";
 
 import "src/Messaging.sol";
+import "src/local/Sample.sol";
 import "src/local/StarknetMessagingLocal.sol";
 
 /**
@@ -25,6 +27,13 @@ contract LocalSetup is Script {
 
         address contractMsg = address(new Messaging(snLocalAddress));
         vm.serializeString(json, "contractMsg_address", vm.toString(contractMsg));
+
+        address localAddress = address(new Sample());
+        vm.serializeString(json, "sample_address", vm.toString(localAddress));
+
+        console.log("LocalSetup: snMessaging_address: ", vm.toString(snLocalAddress));
+        console.log("LocalSetup: contractMsg_address: ", vm.toString(contractMsg));
+        console.log("LocalSetup: sample_address: ", vm.toString(localAddress));
 
         vm.stopBroadcast();
 

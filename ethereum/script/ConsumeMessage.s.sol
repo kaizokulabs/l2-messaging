@@ -9,27 +9,27 @@ import "src/Messaging.sol";
 /**
  * @notice A simple script to consume a message from Starknet.
  */
-contract Struct is Script {
+contract Consume is Script {
     uint256 _privateKey;
     address _contractMsgAddress;
     uint256 _l2Account;
 
     function setUp() public {
         _privateKey = vm.envUint("ACCOUNT_PRIVATE_KEY");
-        _contractMsgAddress = vm.envAddress("CONTRACT_MSG_ADDRESS");
-        _l2Account = vm.envUint("L2_ACCOUNT");
+        _contractMsgAddress = vm.envAddress("ETH_MSG_ADDR");
+        _l2Account = vm.envUint("SN_ACCOUNT_ADDR");
     }
 
     function run() public {
         vm.startBroadcast(_privateKey);
 
-        uint256[] memory payload = new uint256[](3);
-        payload[0] = 1;
-        payload[1] = 2;
-        payload[2] = 3;
+        uint256[] memory payload = new uint256[](4);
+        payload[0] = 0;
+        payload[1] = 0;
+        payload[2] = 0;
+        payload[3] = 0;
 
-        uint256 result = Messaging(_contractMsgAddress).consumeMessage(_l2Account, payload);
-        console.log("Result:", result);
+        Messaging(_contractMsgAddress).consumeMessage(_l2Account, payload);
 
         vm.stopBroadcast();
     }

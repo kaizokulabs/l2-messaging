@@ -1,0 +1,2 @@
+L1_Sender -> Native_L2_Messaging: Send(l2_recv_addr, selector, payload)
+Native_L2_Messaging -> L2_Receiver: ReceiveHandler(from_addr, payload)

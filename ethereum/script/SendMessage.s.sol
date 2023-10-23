@@ -9,64 +9,31 @@ import "src/Messaging.sol";
 /**
  * @notice A simple script to send a message to Starknet.
  */
-contract Value is Script {
+contract Send is Script {
     uint256 _privateKey;
     address _contractMsgAddress;
-    address _starknetMessagingAddress;
     uint256 _l2ContractAddress;
     uint256 _l2Selector;
 
     function setUp() public {
         _privateKey = vm.envUint("ACCOUNT_PRIVATE_KEY");
-        _contractMsgAddress = vm.envAddress("CONTRACT_MSG_ADDRESS");
-        _starknetMessagingAddress = vm.envAddress("SN_MESSAGING_ADDRESS");
-        _l2ContractAddress = vm.envUint("L2_CONTRACT_ADDRESS");
-        _l2Selector = vm.envUint("L2_SELECTOR_VALUE");
+        _contractMsgAddress = vm.envAddress("ETH_MSG_ADDR");
+        _l2ContractAddress = vm.envUint("SN_CONTRACT_ADDR");
+        _l2Selector = vm.envUint("SN_CONTRACT_SELECTOR");
     }
 
     function run() public {
         vm.startBroadcast(_privateKey);
 
-        uint256[] memory payload = new uint256[](1);
-        payload[0] = 1;
+        uint256[] memory payload = new uint256[](3);
+        payload[0] = uint256(uint160(msg.sender));
+        payload[1] = 1;
+        payload[2] = 3;
 
         console.log("Sending message to Starknet");
         console.log("Messaging address: ", _contractMsgAddress);
         console.log("L2 contract address: ", _l2ContractAddress);
         console.log("L2 selector: ", _l2Selector);
-
-        // Remember that there is a cost of at least 20k wei to send a message.
-        // Let's send 30k here to ensure that we pay enough for our payload serialization.
-        Messaging(_contractMsgAddress).sendMessage{value: 30000}(_l2ContractAddress, _l2Selector, payload);
-
-        vm.stopBroadcast();
-    }
-}
-
-/**
- * @notice A simple script to send a message to Starknet.
- */
-contract Struct is Script {
-    uint256 _privateKey;
-    address _contractMsgAddress;
-    address _starknetMessagingAddress;
-    uint256 _l2ContractAddress;
-    uint256 _l2Selector;
-
-    function setUp() public {
-        _privateKey = vm.envUint("ACCOUNT_PRIVATE_KEY");
-        _contractMsgAddress = vm.envAddress("CONTRACT_MSG_ADDRESS");
-        _starknetMessagingAddress = vm.envAddress("SN_MESSAGING_ADDRESS");
-        _l2ContractAddress = vm.envUint("L2_CONTRACT_ADDRESS");
-        _l2Selector = vm.envUint("L2_SELECTOR_STRUCT");
-    }
-
-    function run() public {
-        vm.startBroadcast(_privateKey);
-
-        uint256[] memory payload = new uint256[](2);
-        payload[0] = 1;
-        payload[1] = 2;
 
         // Remember that there is a cost of at least 20k wei to send a message.
         // Let's send 30k here to ensure that we pay enough for our payload serialization.

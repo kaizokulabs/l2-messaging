@@ -42,36 +42,27 @@ contract Messaging {
      *    One must provide the message content, to let Starknet Core contract verify the hash
      *    and validate the message content before being consumed.
      */
-    function consumeMessage(uint256 fromAddress, uint256[] calldata payload) external payable returns (uint256) {
-        console.log("consumeMessage");
-        bytes32 hash = _snMessaging.consumeMessageFromL2(fromAddress, payload);
+    function consumeMessage(uint256 fromAddress, uint256[] calldata payload) external payable {
+        _snMessaging.consumeMessageFromL2(fromAddress, payload);
+
+        //require(payload.length < 1, "Invalid payload");
         
-        console.log("after consume");
-
-        uint256 a = payload[0];
-        uint256 b = payload[1];
-        uint256 c = payload[2];
-
-        return a + b + c;
-
-        // require(payload.length < 3, "Invalid payload");
-        //
-        // address dest_address = address(uint160(payload[0]));
-        // bytes4 selector = bytes4(uint32(payload[1]));
-        // uint256 amount = payload[2];
-        //
-        // require(amount > msg.value, "Invalid amount");
-        //
-        // if (amount > 0) {
-        //     (bool success,) = payable(dest_address).call{value: amount}(abi.encodeWithSelector(selector, payload[3:]));
-        //     if (!success) {
-        //         revert InvalidPayload();
-        //     }
-        // } else {
-        //     (bool success,) = dest_address.call(abi.encodeWithSelector(selector, payload[3:]));
-        //     if (!success) {
-        //         revert InvalidPayload();
-        //     }
-        // }
+        address dest_address = address(uint160(payload[0]));
+        bytes4 selector = bytes4(uint32(payload[1]));
+        uint256 amount = payload[2];
+        
+        //require(amount > msg.value, "Invalid amount");
+        
+        if (amount > 0) {
+            (bool success,) = payable(dest_address).call{value: amount}(abi.encodeWithSelector(selector, payload[3:]));
+            if (!success) {
+                revert InvalidPayload();
+            }
+        } else {
+            (bool success,) = dest_address.call(abi.encodeWithSelector(selector, payload[3:]));
+            if (!success) {
+                revert InvalidPayload();
+            }
+        }
     }
 }
