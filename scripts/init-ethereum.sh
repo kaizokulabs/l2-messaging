@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source /tmp/env
-
 /root/.foundry/bin/anvil --host 0.0.0.0 &
 PID=$!
 sleep 2

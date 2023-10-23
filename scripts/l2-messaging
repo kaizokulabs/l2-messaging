@@ -1,0 +1,89 @@
+#!/bin/bash
+
+load_env() {
+    unamestr=$(uname)
+    if [ "$unamestr" = 'Linux' ]; then
+      export $(grep -v '^#' $(dirname "$0")/env | xargs -d '\n')
+    elif [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
+      export $(grep -v '^#' $(dirname "$0")/env | xargs -0)
+    fi
+}
+
+help() {
+    printf " Usage: l2-messaging <command> <args>
+\tcommand:
+\t  run-all
+\t  run-eth
+\t  run-stark
+\t  send-l1
+\t  send-l2
+\t  help
+"
+}
+
+run() {
+    case $1 in
+        "run-all")
+            docker compose up --build -d
+            ;;
+        "run-eth")
+            docker compose up eth --build -d
+            ;;
+        "run-stark")
+            docker compose up stark --build -d
+            ;;
+    esac
+}
+
+send_l1() {
+    load_env
+    docker exec -it l2_messaging_stark \
+        /root/.starkli/bin/starkli invoke ${SN_CONTRACT_ADDR} \
+        send_message ${@:2} \
+        --account starknet/${STARKNET_ACCOUNT} \
+        --rpc http://0.0.0.0:5050 \
+        --private-key ${SN_ACCOUNT_PRIVATE_KEY}
+    docker exec -it l2_messaging_eth \
+        bash -c "cd /ethereum && \
+        /root/.foundry/bin/forge script \
+        script/ConsumeMessage.s.sol:Consume ${@:2} \
+        --broadcast \
+        --rpc-url ${ETH_RPC_URL}"
+}
+
+send_l2() {
+    load_env
+    docker exec -it l2_messaging_eth \
+        /bin/bash -c "cd /ethereum && \
+        export SN_CONTRACT_ADDR=${SN_CONTRACT_ADDR} && \
+        /root/.foundry/bin/forge script \
+        script/SendMessage.s.sol:Send ${@:2} \
+        --broadcast \
+        --rpc-url ${ETH_RPC_URL}"
+}
+
+if [ $# -eq 0 ]; then
+    help
+    exit 0
+fi
+
+case $1 in
+    "help")
+        help
+        ;;
+    "run-all")
+        run $1
+        ;;
+    "run-eth")
+        run $1
+        ;;
+    "run-stark")
+        run $1
+        ;;
+    "send-l1")
+        send_l1 $@
+        ;;
+    "send-l2")
+        send_l2 $@
+        ;;
+esac
