@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: ./ethereum/Dockerfile.local
+    env_file:
+      - ./scripts/env
     healthcheck:
       test: ["CMD", "netstat", "-tuplen", "|", "grep", "8545"]
       interval: 1s
