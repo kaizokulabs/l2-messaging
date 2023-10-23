@@ -19,7 +19,7 @@ This repository is intended to create a base messaging layer between L1 <> L2 an
 ./scripts/l2-messaging send-l2 0x06cbdfb07ce00b58fed3df6eafa8dae46e12908468a7fe9bf8b53614cbcda1d5 0x23ffd27e2c6df33c582785543c1f8b1b3ecf520dea0b4cf6e3168bfce0b58f8 1 2
 
 # L2 > L1 messaging
-# ./scripts/l2-messaging send-l1
+# TODO (working, not arbitrary): ./scripts/l2-messaging send-l1
 ./scripts/l2-messaging send-l1
 ```
 
