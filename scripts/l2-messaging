@@ -46,7 +46,7 @@ send_l1() {
     docker exec -it l2_messaging_eth \
         bash -c "cd /ethereum && \
         /root/.foundry/bin/forge script \
-        script/ConsumeMessage.s.sol:Consume ${@:2} \
+        script/ConsumeMessage.s.sol:Consume \
         --broadcast \
         --rpc-url ${ETH_RPC_URL}"
 }
