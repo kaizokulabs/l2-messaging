@@ -57,7 +57,6 @@ contract Consume is Script {
 
         console.log("Consuming message from Starknet");
         console.log("Messaging address: ", _contractMsgAddress);
-        console.log("L2 contract address: ", _l2_addr);
         console.log("Payload: ", args[0]+args[1]);
 
         uint256[] memory payload = new uint256[](5);
